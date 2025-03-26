@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:client_recipe_book_app/screens/recipe_detail_screen.dart';
+import 'recipe_detail_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -28,12 +28,13 @@ class HomeScreen extends StatelessWidget {
   Future<void> _showBottom(BuildContext context) async {
     return showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       builder:
           (context) => Container(
             height: 500,
             width: MediaQuery.of(context).size.width,
             color: Colors.white,
-            child: ReciperForm(),
+            child: SingleChildScrollView(child: ReciperForm()),
           ),
     );
   }
@@ -50,13 +51,13 @@ class HomeScreen extends StatelessWidget {
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Container(
+        child: SizedBox(
           width: MediaQuery.of(context).size.width,
           height: 125,
           child: Card(
             child: Row(
               children: <Widget>[
-                Container(
+                SizedBox(
                   height: 125,
                   width: 100,
                   child: ClipRRect(
@@ -99,20 +100,20 @@ class ReciperForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
 
-    final TextEditingController _recipeNameController = TextEditingController();
-    final TextEditingController _recipeAuthorController =
+    final TextEditingController recipeNameController = TextEditingController();
+    final TextEditingController recipeAuthorController =
         TextEditingController();
-    final TextEditingController _recipeImageUrlController =
+    final TextEditingController recipeImageUrlController =
         TextEditingController();
-    final TextEditingController _recipeDescriptionController =
+    final TextEditingController recipeDescriptionController =
         TextEditingController();
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Form(
-        key: _formKey,
+        key: formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -126,7 +127,7 @@ class ReciperForm extends StatelessWidget {
             ),
             SizedBox(height: 10),
             _buildTextField(
-              controller: _recipeNameController,
+              controller: recipeNameController,
               label: 'Recipe Name',
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -137,7 +138,7 @@ class ReciperForm extends StatelessWidget {
             ),
             SizedBox(height: 10),
             _buildTextField(
-              controller: _recipeAuthorController,
+              controller: recipeAuthorController,
               label: 'Author',
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -148,7 +149,7 @@ class ReciperForm extends StatelessWidget {
             ),
             SizedBox(height: 10),
             _buildTextField(
-              controller: _recipeImageUrlController,
+              controller: recipeImageUrlController,
               label: 'Image URL',
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -159,7 +160,7 @@ class ReciperForm extends StatelessWidget {
             ),
             SizedBox(height: 10),
             _buildTextField(
-              controller: _recipeDescriptionController,
+              controller: recipeDescriptionController,
               label: 'Recipe Description',
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -173,7 +174,7 @@ class ReciperForm extends StatelessWidget {
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  if (_formKey.currentState!.validate()) {
+                  if (formKey.currentState!.validate()) {
                     Navigator.pop(context);
                   }
                 },
